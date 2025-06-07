@@ -798,19 +798,24 @@ EnhancedVolcano <- function(
 
   # user has specified to draw with geom_text or geom_label?
   if (!boxedLabels) {
-
     # For labeling with geom_[text|label]_repel and
     # geom_[text|label] with check_overlap = TRUE, 4 possible
     # scenarios can arise
     if (drawConnectors && is.null(selectLab)) {
-
       if (arrowheads) {
         arr <- arrow(length = lengthConnectors,
           type = typeConnectors, ends = endsConnectors)
       } else {
         arr <- NULL
       }
-
+      # --- colConnectors: allow vector for unique connector colors ---
+      connector_colors <- colConnectors
+      n_labels <- nrow(subset(toptable, toptable[[y]] < pCutoff & abs(toptable[[x]]) > FCcutoff))
+      if (length(connector_colors) == 1) {
+        connector_colors <- rep(connector_colors, n_labels)
+      } else if (length(connector_colors) != n_labels) {
+        stop('Length of colConnectors must be 1 or match the number of labels drawn.')
+      }
       plot <- plot + geom_text_repel(
         data = subset(toptable,
           toptable[[y]] < pCutoff &
@@ -821,7 +826,7 @@ EnhancedVolcano <- function(
         xlim = c(NA, NA),
         ylim = c(NA, NA),
         size = labSize,
-        segment.color = colConnectors,
+        segment.color = connector_colors,
         segment.size = widthConnectors,
         arrow = arr,
         colour = labCol,
@@ -831,16 +836,21 @@ EnhancedVolcano <- function(
         direction = directionConnectors,
         max.overlaps = max.overlaps,
         min.segment.length = min.segment.length)
-
     } else if (drawConnectors && !is.null(selectLab)) {
-
       if (arrowheads) {
         arr <- arrow(length = lengthConnectors,
           type = typeConnectors, ends = endsConnectors)
       } else {
         arr <- NULL
       }
-
+      # --- colConnectors: allow vector for unique connector colors ---
+      connector_colors <- colConnectors
+      n_labels <- nrow(subset(toptable, !is.na(toptable[['lab']])))
+      if (length(connector_colors) == 1) {
+        connector_colors <- rep(connector_colors, n_labels)
+      } else if (length(connector_colors) != n_labels) {
+        stop('Length of colConnectors must be 1 or match the number of labels drawn.')
+      }
       plot <- plot + geom_text_repel(
         data = subset(toptable,
           !is.na(toptable[['lab']])),
@@ -849,7 +859,7 @@ EnhancedVolcano <- function(
         xlim = c(NA, NA),
         ylim = c(NA, NA),
         size = labSize,
-        segment.color = colConnectors,
+        segment.color = connector_colors,
         segment.size = widthConnectors,
         arrow = arr,
         colour = labCol,
@@ -859,9 +869,7 @@ EnhancedVolcano <- function(
         direction = directionConnectors,
         max.overlaps = max.overlaps,
         min.segment.length = min.segment.length)
-
     } else if (!drawConnectors && !is.null(selectLab)) {
-
       plot <- plot + geom_text(
         data = subset(toptable,
           !is.na(toptable[['lab']])),
@@ -874,9 +882,7 @@ EnhancedVolcano <- function(
         fontface = labFace,
         parse = parseLabels,
         na.rm = TRUE)
-
     } else if (!drawConnectors && is.null(selectLab)) {
-
       plot <- plot + geom_text(
         data = subset(toptable,
           toptable[[y]] < pCutoff &
@@ -893,19 +899,24 @@ EnhancedVolcano <- function(
     }
 
   } else {
-
     # For labeling with geom_[text|label]_repel and
     # geom_[text|label] with check_overlap = TRUE, 4 possible
     # scenarios can arise
     if (drawConnectors && is.null(selectLab)) {
-
       if (arrowheads) {
         arr <- arrow(length = lengthConnectors,
           type = typeConnectors, ends = endsConnectors)
       } else {
         arr <- NULL
       }
-
+      # --- colConnectors: allow vector for unique connector colors ---
+      connector_colors <- colConnectors
+      n_labels <- nrow(subset(toptable, toptable[[y]] < pCutoff & abs(toptable[[x]]) > FCcutoff))
+      if (length(connector_colors) == 1) {
+        connector_colors <- rep(connector_colors, n_labels)
+      } else if (length(connector_colors) != n_labels) {
+        stop('Length of colConnectors must be 1 or match the number of labels drawn.')
+      }
       plot <- plot + geom_label_repel(
         data = subset(toptable,
           toptable[[y]] < pCutoff &
@@ -916,7 +927,7 @@ EnhancedVolcano <- function(
         xlim = c(NA, NA),
         ylim = c(NA, NA),
         size = labSize,
-        segment.color = colConnectors,
+        segment.color = connector_colors,
         segment.size = widthConnectors,
         arrow = arr,
         colour = labCol,
@@ -926,16 +937,21 @@ EnhancedVolcano <- function(
         direction = directionConnectors,
         max.overlaps = max.overlaps,
         min.segment.length = min.segment.length)
-
     } else if (drawConnectors && !is.null(selectLab)) {
-
       if (arrowheads) {
         arr <- arrow(length = lengthConnectors,
           type = typeConnectors, ends = endsConnectors)
       } else {
         arr <- NULL
       }
-
+      # --- colConnectors: allow vector for unique connector colors ---
+      connector_colors <- colConnectors
+      n_labels <- nrow(subset(toptable, !is.na(toptable[['lab']])))
+      if (length(connector_colors) == 1) {
+        connector_colors <- rep(connector_colors, n_labels)
+      } else if (length(connector_colors) != n_labels) {
+        stop('Length of colConnectors must be 1 or match the number of labels drawn.')
+      }
       plot <- plot + geom_label_repel(
         data = subset(toptable,
           !is.na(toptable[['lab']])),
@@ -944,7 +960,7 @@ EnhancedVolcano <- function(
         xlim = c(NA, NA),
         ylim = c(NA, NA),
         size = labSize,
-        segment.color = colConnectors,
+        segment.color = connector_colors,
         segment.size = widthConnectors,
         arrow = arr,
         colour = labCol,
@@ -954,9 +970,7 @@ EnhancedVolcano <- function(
         direction = directionConnectors,
         max.overlaps = max.overlaps,
         min.segment.length = min.segment.length)
-
     } else if (!drawConnectors && !is.null(selectLab)) {
-
       plot <- plot + geom_label(
         data = subset(toptable,
           !is.na(toptable[["lab"]])),
@@ -968,9 +982,7 @@ EnhancedVolcano <- function(
         fontface = labFace,
         parse = parseLabels,
         na.rm = TRUE)
-
     } else if (!drawConnectors && is.null(selectLab)) {
-
       plot <- plot + geom_label(
         data = subset(toptable,
           toptable[[y]] < pCutoff &
@@ -983,7 +995,6 @@ EnhancedVolcano <- function(
         fontface = labFace,
         parse = parseLabels,
         na.rm = TRUE)
-
     }
   }
 

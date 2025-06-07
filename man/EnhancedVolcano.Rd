@@ -235,7 +235,7 @@ labels to their corresponding points by line connectors.}
 
 \item{lengthConnectors}{Length (size) of the connector arrowheads.}
 
-\item{colConnectors}{Line colour of connectors and line segments.}
+\item{colConnectors}{Line colour of connectors and line segments. Can be a single color (applied to all connectors) or a vector of colors (one per label). If a vector, its length must match the number of labels drawn.}
 
 \item{max.overlaps}{Equivalent of max.overlaps in ggrepel. Set to
 'Inf' to always display all labels when drawConnectors = TRUE.}
